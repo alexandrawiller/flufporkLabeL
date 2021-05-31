@@ -1,0 +1,37 @@
+name: synchroid
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 12 * * *'
+
+#env:
+#  TZ: "Asia/Tokyo"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 230
+    permissions:
+      issues: write
+      pull-requests: write
+    strategy:
+      matrix:
+        scan: [opened, reopened, synchronize]
+      fail-fast: false 
+    env:
+        JOB: ${{ matrix.go }}
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.8.0
+        with:
+          access_token: ${{ github.token }}
+          workflow_id: ${{ github.event.workflow.id }}
+          ignore_sha: true
+      - name: Delete workflow runs
+        uses: GitRML/delete-workflow-runs@main
+        with:
+          retain_days: 1
+          keep_minimum_runs: 3
