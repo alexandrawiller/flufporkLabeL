@@ -56,3 +56,19 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: lscpu
+    - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: wireguard-go-${{ env.WGGO_VERSION }}
+          path: build
+
+    - name: Upload to Release
+        if: github.event.inputs.version == ''
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/*
+          tag: ${{ env.WGGO_VERSION }}
+          overwrite: true
+          file_glob: true
+          prerelease: true
