@@ -54,3 +54,13 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: lscpu
+    - name: 设置环境变量
+      id: date
+      run: |
+        echo "::set-env name=date::$(date +'%m/%d_%Y_%H/%M')"
+        echo "::set-env name=date2::$(date +'%m/%d %Y')"
+        echo "::set-env name=date3::$(date +'%m.%d')"
+        Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
+        RANDOM=$$$(date +%s)
+        rand=$[$RANDOM % ${#Emoji[@]}]
+        echo "::set-env name=EMOJI::${Emoji[$rand]}"
