@@ -10,7 +10,7 @@ on:
 jobs:
   SetupClean:
     runs-on: ubuntu-latest
-    timeout-minutes: 230
+    timeout-minutes: 350
     permissions:
       issues: write
       pull-requests: write
@@ -37,8 +37,31 @@ jobs:
 
   ScanSetup:
     runs-on: ubuntu-latest
-    timeout-minutes: 230
+    timeout-minutes: 350
     needs: [SetupClean]
+    strategy:
+      matrix:
+        scan: [JDK, J2SE, JavSE, JavaLTS]
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - name: Grant execute 🚀
+      run: lscpu
+    - name: 设置环境变量
+      id: date
+      run: |
+        ls
+#        Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
+
+  Download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    needs: [SetupClean, ScanSetup]
     strategy:
       matrix:
         scan: [JDK, J2SE, JavSE, JavaLTS]
