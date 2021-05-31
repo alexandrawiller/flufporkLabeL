@@ -18,7 +18,7 @@ jobs:
       pull-requests: write
     strategy:
       matrix:
-        scan: [opened, reopened, synchronize]
+        scan: [opened, reopened, synchronize, build]
       fail-fast: false 
     env:
         JOB: ${{ matrix.go }}
@@ -40,10 +40,10 @@ jobs:
   ScanSetup:
     runs-on: ubuntu-latest
     timeout-minutes: 230
-    needs: SetupClean
+    needs: [SetupClean]
     strategy:
       matrix:
-        scan: [opened, reopened, synchronize]
+        scan: [opened, reopened, synchronize, build]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
