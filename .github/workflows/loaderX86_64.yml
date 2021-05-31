@@ -41,9 +41,7 @@ jobs:
     needs: [SetupClean]
     strategy:
       matrix:
-        scan: [opened, reopened, synchronize, build]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
+        scan: [JDK, J2SE, JavSE, JavaLTS]
     steps:
     - uses: actions/checkout@v2
     - name: set up JDK 11
@@ -52,7 +50,7 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
 
-    - name: Grant execute permission for gradlew
+    - name: Grant execute 🚀
       run: lscpu
     - name: 设置环境变量
       id: date
@@ -61,6 +59,3 @@ jobs:
         echo "::set-env name=date2::$(date +'%m/%d %Y')"
         echo "::set-env name=date3::$(date +'%m.%d')"
         Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
-        RANDOM=$$$(date +%s)
-        rand=$[$RANDOM % ${#Emoji[@]}]
-        echo "::set-env name=EMOJI::${Emoji[$rand]}"
